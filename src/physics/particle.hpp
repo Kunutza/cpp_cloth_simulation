@@ -1,9 +1,12 @@
 #pragma once
 
 #include <SFML/System/Vector2.hpp>
+#include "../math/index_vector.hpp"
 
 class Particle {
     public:
+        civ::ID id = 0;
+
         float  mass = 1.0f;
 
         bool moving = true;
@@ -12,6 +15,8 @@ class Particle {
         sf::Vector2f old_position;
         sf::Vector2f velocity;
         sf::Vector2f forces;
+
+        Particle() = default;
 
         // Explicit so that you can not use copy initialization
         explicit Particle(sf::Vector2f pos) : position(pos), old_position(pos) {}
@@ -23,7 +28,7 @@ class Particle {
             position += velocity * dt;
         }
 
-        void update_derivatives(float dt) {
+        void updateDerivatives(float dt) {
             velocity = (position - old_position) / dt;
             forces = {};
         }
@@ -33,3 +38,5 @@ class Particle {
             position += v;
         }
 };
+
+using ParticleRef = civ::Ref<Particle>;
