@@ -25,13 +25,14 @@ struct ViewportHandler {
             transform = sf::Transform::Identity;
             transform.translate(center);
             transform.scale(z, z);
-            transform.translate(-offset);
+            transform.translate((-offset));
         }
 
         void updateMousePosition(sf::Vector2f new_position) {
             mouse_position = new_position;
             const sf::Vector2f pos(static_cast<float>(new_position.x), static_cast<float>(new_position.y));
-            mouse_world_position = offset = (pos - center) / zoom;
+            // mouse_world_position = (pos - center) / zoom;
+            mouse_world_position = (pos - center) / zoom + offset;
         }
     };
     State state;
@@ -95,6 +96,10 @@ struct ViewportHandler {
 
     sf::Vector2f getMouseWorldPosition() const {
         return state.mouse_world_position;
+    }
+    
+    sf::Vector2f getMousePosition() const {
+        return  state.mouse_position;
     }
 
     sf::Vector2f getScreenCoords(sf::Vector2f world_pos) const {

@@ -58,11 +58,11 @@ private:
 class WindowContextHandler {
 public:
   WindowContextHandler(const std::string &window_name, sf::Vector2u window_size,
-                       int32_t window_style = sf::Style::Default)
+                       int32_t window_style = sf::Style::Default, const int frame_rate = 60)
       : m_window(sf::VideoMode(window_size.x, window_size.y), window_name,
                  window_style),
         m_event_manager(m_window, true), m_render_context(m_window) {
-    m_window.setFramerateLimit(60);
+    m_window.setFramerateLimit(frame_rate);
     m_render_context.registerCallbacks(m_event_manager);
   }
 
@@ -85,6 +85,10 @@ public:
 
   sf::Vector2f getWorldMousePosition() const {
     return m_render_context.m_viewport_handler.getMouseWorldPosition();
+  }
+
+  sf::Vector2f getMousePosition() const {
+    return m_render_context.m_viewport_handler.getMousePosition();
   }
 
 private:
