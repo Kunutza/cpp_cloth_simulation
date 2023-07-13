@@ -4,7 +4,7 @@
 #include "particle.hpp"
 #include "../math/math.hpp"
 
-class LinkConstraint {
+struct LinkConstraint {
     public:
         civ::ID id = 0;
 
@@ -12,15 +12,15 @@ class LinkConstraint {
         float strength = 1.0f;
         float max_elongation_ratio = 1.5f;
 
-        Particle particle_1;
-        Particle particle_2;
+        ParticleRef particle_1;
+        ParticleRef particle_2;
 
         bool broken = false;
 
         LinkConstraint() = default;
 
-        LinkConstraint(Particle p_1, Particle p_2) : particle_1(p_1), particle_2(p_2) {
-            distance = MathVec2::length(p_1.position - p_2.position);
+        LinkConstraint(ParticleRef p_1, ParticleRef p_2) : particle_1(p_1), particle_2(p_2) {
+            distance = MathVec2::length(p_1->position - p_2->position);
         }
 
         [[nodiscard]]

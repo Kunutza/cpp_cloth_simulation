@@ -282,50 +282,50 @@ namespace civ
 
 
     template<typename T>
-        struct Ref
+    struct Ref
+    {
+        Ref()
+            : id(0)
+              , array(nullptr)
+              , validity_id(0)
+        {}
+
+        Ref(ID id_, Vector<T>* a, ID vid)
+            : id(id_)
+              , array(a)
+              , validity_id(vid)
+        {}
+
+        T* operator->()
         {
-            Ref()
-                : id(0)
-                  , array(nullptr)
-                  , validity_id(0)
-            {}
+            return &(*array)[id];
+        }
 
-            Ref(ID id_, Vector<T>* a, ID vid)
-                : id(id_)
-                  , array(a)
-                  , validity_id(vid)
-            {}
+        T& operator*()
+        {
+            return (*array)[id];
+        }
 
-            T* operator->()
-            {
-                return &(*array)[id];
-            }
+        const T& operator*() const
+        {
+            return (*array)[id];
+        }
 
-            T& operator*()
-            {
-                return (*array)[id];
-            }
+        civ::ID getID() const
+        {
+            return id;
+        }
 
-            const T& operator*() const
-            {
-                return (*array)[id];
-            }
+        explicit
+        operator bool() const
+        {
+            return array && array->isValid(id, validity_id);
+        }
 
-            civ::ID getID() const
-            {
-                return id;
-            }
-
-            explicit
-                operator bool() const
-                {
-                    return array && array->isValid(id, validity_id);
-                }
-
-            private:
+        private:
             ID         id;
             Vector<T>* array;
             ID         validity_id;
-        };
+    };
 
 }
