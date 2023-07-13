@@ -1,5 +1,3 @@
-## To fix
-
 ### (All the UPPERCASE will be consts that will be read from a values.txt that will be located next to main.cpp)
 main.cpp:  const uint32_t window_width = 1920;
 main.cpp:  const uint32_t window_height = 1080;
@@ -20,3 +18,5 @@ src/physics/constraints.cpp: float max_elongation_ratio = 1.5f;
 
 src/physics/physics.hpp : const sf::Vector2f gravity(0.0f, 1500.0f);
 src/physics/physics.hpp : const float friction_coef = 0.5f;
+
+### Maybe add a README.md to explain the values.txt and other things
