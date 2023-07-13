@@ -5,9 +5,10 @@
 
 
 int main() {
-    const uint32_t window_width = 800;
-    const uint32_t window_height = 600;
-    WindowContextHandler app("Cloth_Simulation", sf::Vector2u(window_width, window_height), sf::Style::Default);
+    const uint32_t window_width = 1920;
+    const uint32_t window_height = 1080;
+    const int frame_rate = 60;
+    WindowContextHandler app("Cloth_Simulation", sf::Vector2u(window_width, window_height), sf::Style::Default, frame_rate);
 
     PhysicSolver solver;
     Renderer renderer(solver);
@@ -59,14 +60,16 @@ int main() {
     });
 
     // Main loop
-    const float dt = 1.0f / 60.0f;
+    const float time_multiplier = 10;
+    const float dt = (1.0f / to<float>(frame_rate)) * time_multiplier;
     while (app.run()) {
         const sf::Vector2f mouse_position = app.getWorldMousePosition();
+        const sf::Vector2f of = app.getMousePosition();
 
         if (dragging) {
             const sf::Vector2f mouse_speed = mouse_position - last_mouse_position;
             last_mouse_position = mouse_position;
-            usr::Utils::applyForceOnCloth(mouse_position, 100.0f, mouse_speed * 8000.0f, solver);
+                usr::Utils::applyForceOnCloth(mouse_position, 100.0f, mouse_speed * 8000.0f, solver);
         }
 
         if (erasing) {
