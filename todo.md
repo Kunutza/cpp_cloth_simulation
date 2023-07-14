@@ -29,4 +29,6 @@ Or the user could change the strength if that works
 If the program does not start then it is likey that you have made a mistake in the values.txt file
 Here is a correct template that you can copy & paste so you can start over:
 
+### if links stretch over the limit they dissapear
+
 ### Could delete the  particles that drop  under certain height
