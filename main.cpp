@@ -2,20 +2,33 @@
 #include "src/physics/physics.hpp"
 #include "src/render/renderer.hpp"
 #include "src/physics/utils.hpp"
+#include "read_values.hpp"
 
+
+map<string, string> Reader::default_values_map = {
+    {"window_width", "1920"},
+    {"window_height", "1080"},
+    {"frame_rate", "60"},
+    {"time_multiplier", "10.0"},
+    {"cloth_width", "75"},
+    {"cloth_height", "50"},
+    {"links_length", "20.0"}
+};
 
 int main() {
-    const uint32_t window_width = 1920;
-    const uint32_t window_height = 1080;
-    const int frame_rate = 60;
+    const string values = Reader::getFileAsString("values.txt");
+
+    const uint32_t window_height = stoi(Reader::get_window_height(values));
+    const uint32_t  window_width = stoi(Reader::get_window_width(values));
+    const int frame_rate = stoi(Reader::get_frame_rate(values));
     WindowContextHandler app("Cloth_Simulation", sf::Vector2u(window_width, window_height), sf::Style::Default, frame_rate);
 
     PhysicSolver solver;
     Renderer renderer(solver);
 
-    const uint32_t cloth_width  = 75;
-    const uint32_t cloth_height = 50;
-    const float    links_length = 20.0f;
+    const uint32_t cloth_width  = stoi(Reader::get_cloth_width(values));
+    const uint32_t cloth_height = stoi(Reader::get_cloth_height(values));
+    const float    links_length = stof(Reader::get_links_lenght(values));
     const float    start_x      = (window_width - (cloth_width - 1) * links_length) * 0.5f;
     for (uint32_t y(0); y < cloth_height; ++y) {
         // This is just a formula to make the top links stronger since
@@ -60,7 +73,7 @@ int main() {
     });
 
     // Main loop
-    const float time_multiplier = 10;
+    const float time_multiplier = stof(Reader::get_time_multitplier(values));
     const float dt = (1.0f / to<float>(frame_rate)) * time_multiplier;
     while (app.run()) {
         const sf::Vector2f mouse_position = app.getWorldMousePosition();
