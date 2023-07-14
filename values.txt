@@ -1,0 +1,24 @@
+const uint32_t window_width=1920
+const uint32_t window_height=1080
+const int frame_rate=60
+const float time_multiplier=10.0
+const uint32_t cloth_width=75
+const uint32_t cloth_height=50
+const float links_lenght=20.0
+
+usr::Utils::applyForceOnCloth(mouse_position, 100.0f, mouse_speed * 8000.0f, solver); 
+const float applyforce_radius = 100.0
+const float applyforce_force = 8000.0
+
+solver.objects.remove_if([&](const Particle& p) {return usr::Utils::isInRadius(p, mouse_position, 10.0f);});
+const float remove_radius = 10.0
+
+src/physics/particle.cpp: float  mass = 1.0f;
+
+src/physics/constraints.cpp: float distance = 1.0f;
+src/physics/constraints.cpp: float strength = 1.0f;
+src/physics/constraints.cpp: float max_elongation_ratio = 1.5f;
+
+src/physics/physics.hpp : const sf::Vector2f gravity(0.0f, 1500.0f);
+src/physics/physics.hpp : const float friction_coef = 0.5f;
+

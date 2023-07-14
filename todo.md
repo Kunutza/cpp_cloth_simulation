@@ -21,6 +21,10 @@ src/physics/physics.hpp : const float friction_coef = 0.5f;
 
 ### Could maybe change the formula for strength in the main.cpp
 
+### if time_multiplier is greater than 10.0 the links just break
+could change the strength to 1.0 * (time_multiplier / 10.0)
+Or the user could change the strength if that works
+
 ### Maybe add a README.md to explain the values.txt 
 If the program does not start then it is likey that you have made a mistake in the values.txt file
 Here is a correct template that you can copy & paste so you can start over:
