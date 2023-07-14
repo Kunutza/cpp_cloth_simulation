@@ -12,23 +12,26 @@ map<string, string> Reader::default_values_map = {
     {"time_multiplier", "10.0"},
     {"cloth_width", "75"},
     {"cloth_height", "50"},
-    {"links_length", "20.0"}
+    {"links_length", "20.0"},
+    {"applyforce_radius", "100.0"},
+    {"applyforce_strength", "8000.0"},
+    {"remove_radius", "10.0"}
 };
 
 int main() {
     const string values = Reader::getFileAsString("values.txt");
 
-    const uint32_t window_height = stoi(Reader::get_window_height(values));
-    const uint32_t  window_width = stoi(Reader::get_window_width(values));
-    const int frame_rate = stoi(Reader::get_frame_rate(values));
+    const uint32_t window_height = stoi(Reader::get_value(values, "window_height"));
+    const uint32_t  window_width = stoi(Reader::get_value(values, "window_width"));
+    const int frame_rate = stoi(Reader::get_value(values, "frame_rate"));
     WindowContextHandler app("Cloth_Simulation", sf::Vector2u(window_width, window_height), sf::Style::Default, frame_rate);
 
     PhysicSolver solver;
     Renderer renderer(solver);
 
-    const uint32_t cloth_width  = stoi(Reader::get_cloth_width(values));
-    const uint32_t cloth_height = stoi(Reader::get_cloth_height(values));
-    const float    links_length = stof(Reader::get_links_lenght(values));
+    const uint32_t cloth_width  = stoi(Reader::get_value(values, "cloth_width"));
+    const uint32_t cloth_height = stoi(Reader::get_value(values, "cloth_height"));
+    const float    links_length = stof(Reader::get_value(values, "links_length"));
     const float    start_x      = (window_width - (cloth_width - 1) * links_length) * 0.5f;
     for (uint32_t y(0); y < cloth_height; ++y) {
         // This is just a formula to make the top links stronger since
@@ -71,9 +74,12 @@ int main() {
     app.getEventManager().addMouseReleasedCallback(sf::Mouse::Middle, [&](sfev::CstEv) {
         erasing = false;
     });
+    const float applyforce_radius = stof(Reader::get_value(values, "applyforce_radius"));
+    const float applyforce_strength = stof(Reader::get_value(values, "applyforce_strength"));
+    const float remove_radius = stof(Reader::get_value(values, "remove_radius"));
 
     // Main loop
-    const float time_multiplier = stof(Reader::get_time_multitplier(values));
+    const float time_multiplier = stof(Reader::get_value(values, "time_multiplier"));
     const float dt = (1.0f / to<float>(frame_rate)) * time_multiplier;
     while (app.run()) {
         const sf::Vector2f mouse_position = app.getWorldMousePosition();
@@ -82,12 +88,12 @@ int main() {
         if (dragging) {
             const sf::Vector2f mouse_speed = mouse_position - last_mouse_position;
             last_mouse_position = mouse_position;
-                usr::Utils::applyForceOnCloth(mouse_position, 100.0f, mouse_speed * 8000.0f, solver);
+            usr::Utils::applyForceOnCloth(mouse_position, applyforce_radius, mouse_speed * applyforce_strength, solver);
         }
 
         if (erasing) {
             // Delete all nodes that are in the range of the mouse
-            solver.objects.remove_if([&](const Particle& p) {return usr::Utils::isInRadius(p, mouse_position, 10.0f);});
+            solver.objects.remove_if([&](const Particle& p) {return usr::Utils::isInRadius(p, mouse_position, remove_radius);});
         }
 
         // Update physics
