@@ -1,9 +1,9 @@
 ### (All the UPPERCASE will be consts that will be read from a values.txt that will be located next to main.cpp)
 main.cpp:  const uint32_t window_width = 1920;
 main.cpp:  const uint32_t window_height = 1080;
+main.cpp:  const int frame_rate = 60;
 main.cpp:  const uint32_t cloth_width = 75;
 main.cpp:  const uint32_t cloth_height = 50;
-main.cpp:  const int frame_rate = 60;
 main.cpp:  const float links_lenght = 20.0f;
 main.cpp:  const float start_x = (window_width - (cloth_width - 1) * links_length) * 0.5f;
 main.cpp:  const float time_multiplier = 10;
@@ -19,4 +19,10 @@ src/physics/constraints.cpp: float max_elongation_ratio = 1.5f;
 src/physics/physics.hpp : const sf::Vector2f gravity(0.0f, 1500.0f);
 src/physics/physics.hpp : const float friction_coef = 0.5f;
 
-### Maybe add a README.md to explain the values.txt and other things
+### Could maybe change the formula for strength in the main.cpp
+
+### Maybe add a README.md to explain the values.txt 
+If the program does not start then it is likey that you have made a mistake in the values.txt file
+Here is a correct template that you can copy & paste so you can start over:
+
+### Could delete the  particles that drop  under certain height
