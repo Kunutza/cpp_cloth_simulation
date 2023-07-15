@@ -2,11 +2,13 @@
 
 #include <SFML/System/Vector2.hpp>
 #include "../math/index_vector.hpp"
+#include "../read/read_values.hpp"
 
 struct Particle {
     civ::ID id = 0;
 
-    float  mass = 1.0f;
+    //float mass = stof(Reader::get_value("mass=1.0", "mass"));
+    float mass = Values::mass;
 
     bool moving = true;
 

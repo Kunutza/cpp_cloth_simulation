@@ -2,36 +2,22 @@
 #include "src/physics/physics.hpp"
 #include "src/render/renderer.hpp"
 #include "src/physics/utils.hpp"
-#include "read_values.hpp"
+#include "src/read/read_values.hpp"
 
-
-map<string, string> Reader::default_values_map = {
-    {"window_width", "1920"},
-    {"window_height", "1080"},
-    {"frame_rate", "60"},
-    {"time_multiplier", "10.0"},
-    {"cloth_width", "75"},
-    {"cloth_height", "50"},
-    {"links_length", "20.0"},
-    {"applyforce_radius", "100.0"},
-    {"applyforce_strength", "8000.0"},
-    {"remove_radius", "10.0"}
-};
 
 int main() {
-    const string values = Reader::getFileAsString("values.txt");
 
-    const uint32_t window_height = stoi(Reader::get_value(values, "window_height"));
-    const uint32_t  window_width = stoi(Reader::get_value(values, "window_width"));
-    const int frame_rate = stoi(Reader::get_value(values, "frame_rate"));
+    const uint32_t  window_width = Values::window_width;
+    const uint32_t window_height = Values::window_height;
+    const int frame_rate = Values::frame_rate;
     WindowContextHandler app("Cloth_Simulation", sf::Vector2u(window_width, window_height), sf::Style::Default, frame_rate);
 
     PhysicSolver solver;
     Renderer renderer(solver);
 
-    const uint32_t cloth_width  = stoi(Reader::get_value(values, "cloth_width"));
-    const uint32_t cloth_height = stoi(Reader::get_value(values, "cloth_height"));
-    const float    links_length = stof(Reader::get_value(values, "links_length"));
+    const uint32_t cloth_width  = Values::cloth_width;
+    const uint32_t cloth_height = Values::cloth_height;
+    const float    links_length = Values::links_length;
     const float    start_x      = (window_width - (cloth_width - 1) * links_length) * 0.5f;
     for (uint32_t y(0); y < cloth_height; ++y) {
         // This is just a formula to make the top links stronger since
@@ -74,12 +60,12 @@ int main() {
     app.getEventManager().addMouseReleasedCallback(sf::Mouse::Middle, [&](sfev::CstEv) {
         erasing = false;
     });
-    const float applyforce_radius = stof(Reader::get_value(values, "applyforce_radius"));
-    const float applyforce_strength = stof(Reader::get_value(values, "applyforce_strength"));
-    const float remove_radius = stof(Reader::get_value(values, "remove_radius"));
+    const float applyforce_radius = Values::applyforce_radius;
+    const float applyforce_strength = Values::applyforce_strength;
+    const float remove_radius = Values::remove_radius;
 
     // Main loop
-    const float time_multiplier = stof(Reader::get_value(values, "time_multiplier"));
+    const float time_multiplier = Values::time_multiplier;
     const float dt = (1.0f / to<float>(frame_rate)) * time_multiplier;
     while (app.run()) {
         const sf::Vector2f mouse_position = app.getWorldMousePosition();
